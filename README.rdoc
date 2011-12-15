@@ -4,6 +4,10 @@
 
 Mongoid is an ODM (Object-Document-Mapper) framework for MongoDB in Ruby.
 
+== About This Gem
+
+This is a small fork of the Mongoid 1.9.5 gem being maintained to preserve Rails 2 compatibility.
+
 == Project Tracking
 
 * {Mongoid on Pivotal Tracker}[http://www.pivotaltracker.com/projects/27482]
