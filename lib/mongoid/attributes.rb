@@ -40,11 +40,7 @@ module Mongoid #:nodoc:
       # put into the document's attributes.
       def process(attrs = nil)
         (attrs || {}).each_pair do |key, value|
-          if set_allowed?(key)
-            @attributes[key.to_s] = value
-          elsif write_allowed?(key)
-            send("#{key}=", value)
-          end
+          write_attribute(key, value)
         end
         setup_modifications
       end
@@ -108,7 +104,12 @@ module Mongoid #:nodoc:
       # there is any.
       def write_attribute(name, value)
         access = name.to_s
-        modify(access, @attributes[access], fields[access].set(value))
+        new_value = if set_allowed?(access)
+          value
+        elsif write_allowed?(access)
+          fields[access].set(value)
+        end
+        modify(access, @attributes[access], new_value)
         notify if !id.blank? && new_record?
       end
 
