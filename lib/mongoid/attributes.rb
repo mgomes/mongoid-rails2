@@ -107,7 +107,11 @@ module Mongoid #:nodoc:
         new_value = if set_allowed?(access)
           value
         elsif write_allowed?(access)
-          fields[access].set(value)
+          if fields[access].nil?
+            send("#{access}=", value)
+          else
+            fields[access].set(value)
+          end
         end
         modify(access, @attributes[access], new_value)
         notify if !id.blank? && new_record?
